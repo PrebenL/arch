@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+
+import requests, json
+from bs4 import BeautifulSoup
+from termcolor import colored, cprint
+
+vToSpot = [
+'Tsuki ga Michibiku Isekai Douchuu', 
+'Fumetsu no Anata e', 
+'Seirei Gensouki',
+'Bokutachi no Remake'
+]
+
+vJSON = '''{
+"Tsuki ga Michibiku Isekai Douchuu":
+[
+{"name":"Moon-led Journey Across"}
+], 
+"Fumetsu no Anata e":
+[
+{"name":"To Your Eternity"}
+], 
+"Seirei Gensouki":
+[
+{"name":"Spirit Chronicles"}
+],
+"Bokutachi no Remake":
+[
+{"name":"Remake our Life"}
+]
+}'''
+
+vParsedJson = json.loads(vJSON)
+
+def findAnime(limit):
+	vBaseUrl = "https://gogoanime.vc/?page="
+	for num in range(1 , int(limit)):
+		vUrl = requests.get(vBaseUrl + str(num)).text
+		vSoupCall = BeautifulSoup(vUrl,'lxml')
+		vNames = vSoupCall.find('ul', {'class': 'items'})
+		vList = vNames.find_all("li")
+		print(colored('PAGE ' + str(num) + ' ------------', 'red'))
+		for x in vList:
+			vCNameTitle = x.find("p", class_='name')
+			vCNameEpisode = x.find("p", class_='episode')
+			vEpisode = vCNameEpisode.getText()
+			vTitle = vCNameTitle.a['title']
+			if vTitle in vToSpot:
+				vTitleMod = vParsedJson[vTitle][0]['name']
+				cprint(colored(vTitleMod + ' - ' + vEpisode, 'grey','on_green'))
+			else:
+				print(colored(vTitle, 'blue') + ' - ' + colored(vEpisode, 'cyan'))
+
+findAnime(4)

@@ -11,7 +11,7 @@ echo "127.0.0.1 localhost.localdomain arch" >> /etc/hosts
 echo root:password | chpasswd
 
 
-pacman -S grub efibootmgr reflector networkmanager avahi linux-headers xdg-user-dirs xdg-utils gvfs gvfs-smb alsa-utils pipewire pipewire-alsa pipewire-pulse pipewire-jack openssh terminus-font
+pacman -S grub efibootmgr networkmanager avahi linux-headers xdg-user-dirs xdg-utils gvfs gvfs-smb alsa-utils pipewire pipewire-alsa pipewire-pulse pipewire-jack openssh
 
 # pacman -S --noconfirm xf86-video-amdgpu
 # pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
@@ -21,7 +21,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable NetworkManager
 systemctl enable sshd
-systemctl enable reflector.timer
+#systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable avahi-daemon
 

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "Starting x11-custom."
+read -p "Config path? : " vPATH
+echo "DEBUG-INFO: $vPATH"
+read -p "WM to test? : " vWM
+
+if [ -e "$vPATH" ] || [ $vWM == "qtile" ]; then
+	Xephyr -br -ac -noreset -screen 800x600 :1 & 
+	export DISPLAY=:1
+	qtile start -c $vPATH
+	export DISPLAY=:0
+[ else echo "Not found" ]
+fi
+
+echo 'DONE'
